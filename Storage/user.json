@@ -1,0 +1,17 @@
+{
+  "56ae25e7-a9a3-47e8-b0ea-2019e71c0104": {
+    "email": "a@email.com",
+    "password": "123456",
+    "uuid": "56ae25e7-a9a3-47e8-b0ea-2019e71c0104"
+  },
+  "88542e00-3dcf-45ab-8566-4d3267db9394": {
+    "email": "a@email.com",
+    "password": "123456",
+    "uuid": "88542e00-3dcf-45ab-8566-4d3267db9394"
+  },
+  "e915f8ab-5c87-41e0-97ca-e168e6e8cbb2": {
+    "email": "a@email.com",
+    "password": "123456",
+    "uuid": "e915f8ab-5c87-41e0-97ca-e168e6e8cbb2"
+  }
+}
