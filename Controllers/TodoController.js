@@ -9,16 +9,11 @@ module.exports = {
 };
 
 function getAll() {
-    let todos = [];
-    if (!fs.existsSync(filePath)) {
-        fs.writeFile(filePath, '{}', function (err) {
-            if (err) throw err;
-            todos = {};
-        })
-    } else {
-        todos = fs.readFileSync(filePath, 'utf8');
+    try {
+        return fs.readFileSync(filePath, 'utf8');
+    } catch (e) {
+        return '{}';
     }
-    return todos;
 }
 
 function index(req) {
@@ -42,7 +37,7 @@ function create(req) {
     todos = JSON.parse(todos);
     newTodo.uuid = uuid;
     todos[uuid] = newTodo;
-    todos = JSON.stringify(todos);
+    todos = JSON.stringify(todos, null, 2);
 
     fs.writeFile(filePath, todos, (err) => {
         if (err)
@@ -77,7 +72,7 @@ function update(req) {
         }
     }
 
-     todos = JSON.stringify(todos);
+     todos = JSON.stringify(todos, null, 2);
     fs.writeFile(filePath, todos, (err) => {
         if (err)
             return err;
@@ -93,7 +88,7 @@ function destroy(req) {
         return "invalid Data";
     }
     delete todos[uuid];
-    todos = JSON.stringify(todos);
+    todos = JSON.stringify(todos, null, 2);
 
     fs.writeFile(filePath, todos, (err) => {
         if (err)

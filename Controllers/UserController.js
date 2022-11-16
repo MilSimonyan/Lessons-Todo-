@@ -2,50 +2,109 @@
 
 const fs = require('fs');
 const {v4: uuidv4} = require('uuid');
+const jwt = require("jsonwebtoken");
 const filePath = './Storage/user.json';
 
 module.exports = {
     register, logIn, logOut
 };
 
-function register(req) {
-    let users = getAll();
+function register(req, res) {
     const uuid = uuidv4()
+    let users = getAll();
+    let confPass = req.body.confPass;
     let user = {
-        email:  req.body.email,
+        email: req.body.email,
         password: req.body.password
     }
-    let confPass = req.body.confPass;
+    user['uuid'] = uuid;
+    users = JSON.parse(users);
 
-    if (user.password !== confPass) {
-        return "Passwords do not match."
+    let exists = users.find(item => item.email === user.email);
+
+    if(exists) {
+        return res
+            .status(401)
+            .json({
+                "message": 'Email already exists'
+            });
     }
 
-    user['uuid'] = uuid
-    users = JSON.parse(users)
-    users[uuid] = user;
-    users = JSON.stringify(users);
+    if (user.password !== confPass) {
+        return res
+                .status(401)
+                .json({
+                    "message": "Passwords do not match."
+                });
+    }
 
+    users.push(user);
+    users = JSON.stringify(users,null, 2);
     fs.writeFile(filePath, users, (err) => {
         if (err)
             return err;
     })
 
-    return user;
+    return res
+            .status(200)
+            .send(user);
 }
 
-function logIn(){}
-function logOut(){}
+function logIn(req, res , next) {
+    let {email, password} = req.body;
+    let users = getAll();
+    users = JSON.parse(users);
+
+    let exists = users.find(item => item.email === email);
+
+    if (!exists){
+        return res
+            .status(401)
+            .json({
+                "message":  "Wrong Email."
+            });
+    }
+
+    if (exists.password !== password) {
+        return res
+            .status(401)
+            .json({
+                "message": "Wrong Password."
+            });
+
+    }
+
+    let token;
+    try {
+        token = jwt.sign(
+            { userId: exists.uuid, email: exists.email},
+            "secretkeyappearshere",
+            { expiresIn: "1h" }
+        );
+    } catch (err) {
+        const error = new Error("Error! Something went wrong.");
+        return next(error);
+    }
+    res
+        .status(201)
+        .json({
+            success: true,
+            data: {
+                user: exists,
+                token: token },
+        });
+
+    return "aaa";
+}
+
+
+function logOut() {
+}
 
 function getAll() {
-    let users = [];
-    if (!fs.existsSync(filePath)) {
-        fs.writeFile(filePath, '{}', function (err) {
-            if (err) throw err;
-            users = {};
-        })
-    } else {
-        users = fs.readFileSync(filePath, 'utf8');
+    try {
+        return fs.readFileSync(filePath, 'utf8');
+    } catch (e) {
+        return '[]';
     }
-    return users;
 }

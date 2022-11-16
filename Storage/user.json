@@ -1,17 +1,22 @@
-{
-  "56ae25e7-a9a3-47e8-b0ea-2019e71c0104": {
-    "email": "a@email.com",
+[
+  {
+    "email": "a@mail.ru",
     "password": "123456",
-    "uuid": "56ae25e7-a9a3-47e8-b0ea-2019e71c0104"
+    "uuid": "3dc42999-a089-42f9-868a-e4e9d1fec454"
   },
-  "88542e00-3dcf-45ab-8566-4d3267db9394": {
-    "email": "a@email.com",
+  {
+    "email": "ab@mail.ru",
     "password": "123456",
-    "uuid": "88542e00-3dcf-45ab-8566-4d3267db9394"
+    "uuid": "d6f5a845-aeca-4c12-b801-3d40dbe80f6c"
   },
-  "e915f8ab-5c87-41e0-97ca-e168e6e8cbb2": {
-    "email": "a@email.com",
+  {
+    "email": "abc@mail.ru",
     "password": "123456",
-    "uuid": "e915f8ab-5c87-41e0-97ca-e168e6e8cbb2"
+    "uuid": "b0156faf-9f88-43b8-9e5c-422b9cacb44b"
+  },
+  {
+    "email": "abgg@mail.ru",
+    "password": "123456",
+    "uuid": "72788bb8-e984-4c0b-b92d-454110dce724"
   }
-}
+]
