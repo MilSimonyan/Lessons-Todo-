@@ -16,20 +16,30 @@ function getAll() {
     }
 }
 
-function index(req) {
+function index(req, res) {
     let uuid = req.params.uuid;
     let todos = getAll();
 
     todos = JSON.parse(todos);
 
     if (!todos[uuid]) {
-        return "Data Not Found";
+        return res
+                .status(403)
+                .json({
+                    success: false,
+                    message: "Data Not Found"
+                });
     }
 
-    return todos[uuid];
+    return res
+        .status(200)
+        .json({
+            success: true,
+            todo:  todos[uuid]
+        })
 }
 
-function create(req) {
+function create(req, res) {
     let todos = getAll();
     let uuid = uuidv4();
     let newTodo = req.body;
@@ -43,12 +53,20 @@ function create(req) {
         if (err)
             return err;
     })
-    return todos;
+
+    todos = JSON.parse(todos);
+
+    return res
+        .status(200)
+        .json({
+            success: true,
+            todo:  todos
+        })
 }
 
 
 
-function update(req) {
+function update(req, res) {
     let todos = getAll();
     let uuid = req.params.uuid;
     let todo = req.body.todo;
@@ -56,7 +74,12 @@ function update(req) {
     todos = JSON.parse(todos);
 
     if (!todos[uuid]){
-        return "invalid Data";
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "invalid Data"
+            });
     }
 
     let oldStatus = todos[uuid].status
@@ -77,15 +100,26 @@ function update(req) {
         if (err)
             return err;
     })
+    return res
+        .status(200)
+        .json({
+            success: true,
+            todo: todo
+        });
 }
 
-function destroy(req) {
+function destroy(req, res) {
     let todos = getAll();
     let uuid = req.params.uuid;
     todos = JSON.parse(todos);
 
     if (!todos[uuid]){
-        return "invalid Data";
+        return res
+            .status(403)
+            .json({
+                success: false,
+                message: "invalid Data"
+            });
     }
     delete todos[uuid];
     todos = JSON.stringify(todos, null, 2);
@@ -94,5 +128,10 @@ function destroy(req) {
         if (err)
             return err;
     })
-    return "delete";
+    return res
+        .status(200)
+        .json({
+            success: true,
+            message: "delete"
+        });
 }

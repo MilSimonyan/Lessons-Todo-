@@ -5,19 +5,19 @@ const router = express.Router();
 
 router
     .get('/get', (req, res) => {
-    res.send(list.getAll());
+    res.status(200).send(list.getAll());
     })
     .get('/get/:uuid', (req, res) => {
-    res.send(list.index(req));
+    list.index(req, res);
     })
     .post('/create', (req, res) => {
-    res.send(list.create(req));
+    list.create(req, res);
     })
     .patch('/update/:uuid', (req, res)=> {
-    res.send(list.update(req));
+    list.update(req, res);
     })
     .delete('/delete/:uuid', (req, res) => {
-    res.send(list.destroy(req));
+    list.destroy(req, res);
     });
 
 module.exports = router;
