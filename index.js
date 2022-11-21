@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const list = require('./Router/listRouter');
 const auth = require('./Router/userRouter');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const PORT = 5050;
 
